@@ -2,20 +2,19 @@ import socket
 import threading
 from datetime import datetime
 
-# Lista para guardar quem está conectado apenas para LER as mensagens
+# lista que guarda quem está conectado só para ler as mensagens
 clientes_recebedores = []
 
 def tratar_cliente(conexao, endereco):
-    # Quando alguém conecta, a primeira coisa que o cliente manda é um aviso
-    # dizendo se ele é um REMETENTE ou um RECEBEDOR.
+    # quando alguém conecta, a primeira coisa que o cliente manda é um aviso
+    # dizendo se ele é quem manda (remetente) ou quem recebe (recebedor).
     tipo = conexao.recv(1024).decode()
 
     if tipo == "RECEBEDOR":
-        # Se for recebedor, eu guardo a conexão dele na lista
+        #Se for recebedor, eu guardo a conexão dele na lista
         clientes_recebedores.append(conexao)
         
-        # Esse loop infinito serve só pra manter a thread viva. 
-        # Fica esperando até o cara fechar o terminal.
+        #esse loop infinito serve só pra manter a thread viva, fica esperando até o cara fechar o terminal.
         while True:
             try:
                 dado = conexao.recv(1024)
@@ -36,34 +35,31 @@ def tratar_cliente(conexao, endereco):
                 if not msg: 
                     break
                 
-                # A mensagem chega assim: "Nome|Texto que ele digitou"
-                # O .split("|", 1) corta a string no primeiro "|" que achar
+                # a mensagem ta chegando assim: "nome|texto que ele digitou"
+                # o split corta a string no primeiro "|" que achar, serve só pra formatação bonitinha
                 nome, texto = msg.split("|", 1)
                 
-                # Pega o IP que vem da variável 'endereco'
+                # pega o IP que vem da variável 'endereco'
                 ip = endereco[0]
                 
-                # Pega a hora atual do PC
+                # pega a hora atual do PC
                 hora = datetime.now().strftime("%H:%M:%S")
                 
-                # Monta a string exatamente igual à Figura do professor:
-                # Exemplo: Celso (192.168.10.40) [17:21:15] Oi pessoal
                 msg_final = f"{nome} ({ip}) [{hora}] {texto}"
                 
-                # Agora o servidor faz o "Broadcast": manda essa string 
-                # para TODOS que estão na lista de recebedores
+                # aq o servidor faz o "Broadcast", manda essa string praa quem tiver na lista de recebedores
                 for cliente_lendo in clientes_recebedores:
                     cliente_lendo.sendall(msg_final.encode())
                     
             except:
-                break # Se der erro (ex: cliente fechou abruptamente), sai do loop
+                break # Se der erro, sai do loop
         conexao.close()
 
-# ---- INÍCIO DO SERVIDOR ----
+# cmç do servidor
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(("0.0.0.0", 9000))
 server.listen()
-print("Servidor de Chat iniciado na porta 9000...")
+print("Grupo de mensagen iniciado...")
 
 # Fica rodando para sempre esperando pessoas conectarem
 while True:

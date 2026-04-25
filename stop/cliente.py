@@ -4,27 +4,30 @@ HOST = "127.0.0.1"
 PORT = 9002
 
 def iniciar_cliente():
-    print("--- BEM-VINDO AO JOGO DE STOP ---")
+    print("<--- BEM-VINDO AO JOGO DE STOP --->")
     nome = input("Digite seu nome: ")
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as cliente:
         try:
             cliente.connect((HOST, PORT))
+            
+            # manda o nome pro servidor assim q conecta
             cliente.sendall(nome.encode())
 
-            for r in range(3): # n_rodadas
-                print("\nAguardando os outros jogadores e o sorteio da letra...")
+            # faz o laço rodar as 3 rodadas
+            for r in range(3): 
+                print("\nAguardando os outros jogadores para o sorteio da letra...")
                 
-                # Recebe a letra
+                # recebe a string do servidor e corta no ":" pra pegar só a letra
                 msg = cliente.recv(1024).decode()
                 letra = msg.split(":")[1]
-                print(f"\n---> A LETRA DA RODADA E: [{letra}] <---")
+                print(f"\n---> A LETRA DA RODADA É: [{ letra }] <---")
 
-                # Preenchimento das Categorias
+                # loop pra pedir os inputs das categorias
                 for tema in ["Nome", "CEP", "Comida"]:
                     resp = input(f"{tema}: ").strip()
                     
-                    # Se o jogador der apenas enter, envia vazio ("---")
+                    # se o cara der só enter, manda "---" pro servidor saber q ele pulou
                     if not resp:
                         resp = "---"
                         
@@ -32,11 +35,10 @@ def iniciar_cliente():
                 
                 print("\nRespostas enviadas! Aguardando os outros jogadores terminarem...")
                 
-                # Recebe o Textão de Resultados do servidor (usa 4096 bytes por ser um texto longo)
                 resultados = cliente.recv(4096).decode()
                 print(resultados)
 
-                # Sincronia para a próxima rodada
+                # segura a tela ate o cara dar enter pra nao emendar uma rodada na outra sem ele ler
                 input("\nDigite ENTER para indicar que esta pronto para a proxima rodada...")
                 cliente.sendall("ok".encode())
             

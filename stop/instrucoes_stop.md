@@ -1,29 +1,19 @@
-# Trabalho de Redes - Jogo STOP Distribuído
+# Instruções - Jogo de STOP (Sistemas Distribuídos)
 
-## Como executar o projeto
+Pra rodar o jogo , você vai precisar abrir alguns terminais (pode ser o CMD ou o PowerShell) e seguir essa ordem aqui pra não dar erro de conexão:
 
-Para rodar o jogo corretamente, você precisará abrir múltiplos terminais (Prompt de Comando ou PowerShell). A ordem de execução é muito importante.
+### 1. Ligando o Servidor
+O primeiro passo é abrir um terminal na pasta do projeto e ligar o "cérebro" do jogo. 
+- Digite: `python servidor.py`
+- Ele vai avisar que está esperando os jogadores entrarem. Deixe essa janela aberta no canto, ela que controla toda a lógica.
 
-### Passo 1: Iniciar o Servidor
-1. Abra o primeiro terminal.
-2. Navegue até a pasta onde estão os arquivos do código.
-3. Execute o servidor com o comando:
-   `python servidor.py`
-4. O terminal mostrará uma mensagem informando que está aguardando os jogadores se conectarem. Deixe esta janela aberta.
+### 2. Entrando com os Jogadores
+Agora, pra cada jogador que for entrar, você abre um novo terminal separado. 
+- No terminal do Jogador 1, digite: `python cliente.py` e coloque o nome dele.
+- No terminal do Jogador 2, faça a mesma coisa: `python cliente.py` e coloque o nome.
+*OBS: O código tá configurado pra começar quando tiver 2 jogadores (é possível mudar isso na variável N_JOGADORES no servidor), então o jogo só sorteia a letra quando o segundo player conectar.*
 
-### Passo 2: Iniciar os Clientes (Jogadores)
-1. Abra um novo terminal para o **Jogador 1**.
-2. Execute o cliente com o comando:
-   `python cliente.py`
-3. Digite o nome do primeiro jogador.
-4. Abra outro terminal para o **Jogador 2**.
-5. Execute o cliente novamente:
-   `python cliente.py`
-6. Digite o nome do segundo jogador.
-
-*Nota: O jogo foi configurado por padrão para 2 jogadores (variável `N_JOGADORES` no servidor). O jogo só começará e sorteará a primeira letra quando os 2 jogadores estiverem conectados.*
-
-### Passo 3: Jogando
-- Quando a rodada iniciar, a letra sorteada aparecerá na tela.
-- Digite sua resposta para cada categoria e aperte `ENTER`. Se não souber a palavra, aperte `ENTER` deixando vazio.
-- O servidor aguardará todos os jogadores enviarem suas respostas antes de calcular e exibir a pontuação na tela de todos.
+### 3. Como o jogo funciona
+Assim que a letra aparecer, é só ir digitando as respostas de cada categoria e dar ENTER. 
+- Se não souber alguma, pode dar ENTER com tudo vazio que o sistema entende como pulado.
+- O servidor só calcula os pontos depois que todo mundo responder, então se a tela "travar" um pouco, é só esperar o outro jogador terminar de digitar. No fim de cada rodada, aparece uma mensagem com o placar atualizado.

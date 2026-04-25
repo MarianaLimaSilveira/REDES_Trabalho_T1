@@ -1,28 +1,22 @@
-# Trabalho de Redes - Grupo de Mensagens
+# Instruções - Grupo de Mensagens
 
-## Como executar o projeto
+Para esse trabalho, a exigência era de não usar telas divididas no console. Por isso, o sistema separa o cliente em dois scripts diferentes: um que serve só pra receber as mensagens e outro que serve só pra enviar.
 
-Para atender ao requisito de não utilizar telas divididas no terminal, o cliente foi separado em dois scripts diferentes: um exclusivo para leitura e outro exclusivo para envio. 
+Pra testar com um usuário só, é preciso abrir **três terminais** e seguir esse passo a passo:
 
-Para testar com um único usuário, você precisará abrir **três terminais** separados. Siga a ordem exata abaixo:
+### Passo 1: Abrir o Servidor
+Primeiro, abre um terminal e roda o servidor central:
+- Comando: `python servidor.py`
+- Ele que faz o "meio de campo" e manda as mensagens pra todo mundo. Pode deixar ele rodando quietinho lá.
 
-### Passo 1: Iniciar o Servidor (Roteador de Mensagens)
-1. Abra o primeiro terminal.
-2. Execute o servidor central com o comando:
-   `python servidor.py`
-3. Ele ficará aguardando as conexões. Deixe esta janela minimizada ou num canto da tela.
+### Passo 2: A tela de leitura (Quem recebe)
+Abre um segundo terminal e roda o script de recepção:
+- Comando: `python cliente_receber.py`
+- Essa janela aqui você não vai usar pra digitar nada. Ela serve só pra você ficar de olho no que o pessoal tá escrevendo no grupo. É bom deixar ela bem visível.
 
-### Passo 2: Iniciar o Cliente de Leitura (Receptor)
-1. Abra o segundo terminal.
-2. Execute o script de recebimento com o comando:
-   `python cliente_receber.py`
-3. Esta janela servirá **apenas** para visualizar o histórico do chat. Posicione-a em um local visível na sua tela e não digite nada nela.
+### Passo 3: A tela de envio (Quem escreve)
+Por último, abre o terceiro terminal pra ser a sua "mão" no chat:
+- Comando: `python cliente_enviar.py`
+- Ele vai pedir seu nome e depois disso é só sair digitando. Toda vez que você der ENTER aqui, o texto vai aparecer formatado lá no terminal de leitura (aquele do Passo 2).
 
-### Passo 3: Iniciar o Cliente de Envio (Remetente)
-1. Abra o terceiro terminal.
-2. Execute o script de envio com o comando:
-   `python cliente_enviar.py`
-3. Digite o seu nome de usuário quando for solicitado.
-4. A partir de agora, use **apenas este terminal** para digitar e enviar suas mensagens. Ao apertar `ENTER`, a mensagem aparecerá automaticamente no terminal de Leitura (Passo 2).
-
-*Para simular uma conversa com mais pessoas, basta abrir novos pares de terminais (um rodando `cliente_receber.py` e outro rodando `cliente_enviar.py`) para cada novo usuário.*
+*Se quiser simular mais pessoas conversando, é só ir abrindo mais terminais de envio e recepção. O servidor vai tratar cada um como um cliente novo e fazer o broadcast pra todo mundo.*
